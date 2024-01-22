@@ -5,10 +5,10 @@
 # Contributor: wirx6 <wirx654@gmail.com>
 # Contributor: Kirill Müller <krlmlr@mailbox.org>
 
-_enable_ada=yes
-_enable_objc=yes
+_enable_ada=no
+_enable_objc=no
 _enable_rust=no
-_enable_jit=yes
+_enable_jit=no
 _threads="posix"
 _realname=gcc
 pkgbase=mingw-w64-${_realname}
@@ -29,7 +29,7 @@ _sourcedir=${_realname}-${pkgver}
 pkgrel=3
 pkgdesc="GCC for the MinGW-w64"
 arch=('any')
-mingw_arch=('mingw32' 'mingw64' 'ucrt64')
+mingw_arch=('ucrt64')
 url="https://gcc.gnu.org"
 license=('spdx:GPL-3.0-or-later')
 groups=("${MINGW_PACKAGE_PREFIX}-toolchain")
@@ -246,12 +246,13 @@ build() {
     --target=${MINGW_CHOST} \
     --with-native-system-header-dir=${MINGW_PREFIX}/include \
     --libexecdir=${MINGW_PREFIX}/lib \
+    --with-pic \
     --enable-bootstrap \
     --enable-checking=release \
     --with-arch=${_arch} \
     --with-tune=generic \
     --enable-languages=${_languages} \
-    --enable-shared \
+    --disable-shared \
     --enable-static \
     --enable-libatomic \
     --enable-threads=${_threads} \
@@ -261,7 +262,7 @@ build() {
     --enable-libstdcxx-time \
     --disable-libstdcxx-pch \
     --enable-lto \
-    --enable-libgomp \
+    --disable-libgomp \
     --disable-libssp \
     --disable-multilib \
     --disable-rpath \
@@ -272,7 +273,7 @@ build() {
     --with-libiconv \
     --with-system-zlib \
     --with-{gmp,mpfr,mpc,isl}=${MINGW_PREFIX} \
-    --with-pkgversion="Rev${pkgrel}, Built by MSYS2 project" \
+    --with-pkgversion="FPIC Rev${pkgrel}, Built by MSYS2 project" \
     --with-bugurl="https://github.com/msys2/MINGW-packages/issues" \
     --with-gnu-as \
     --with-gnu-ld \
